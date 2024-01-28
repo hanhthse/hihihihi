@@ -1,0 +1,58 @@
+
+/* Navigation Bar */
+
+#navigation-bar {
+    background-color: #ffffff;
+    padding: 0 7% 0;
+}
+
+.header{
+    margin-bottom: 80px;
+}
+.header image{
+    width: 60%;
+}
+
+/* Product */
+#product .row {
+    padding: 3% 10% 3%;
+}
+
+
+#product .list-group {
+    padding-top: 17%;
+}
+/* Footer */
+#footer {
+    padding: 7% 15%;
+    background-color: #000;
+    text-align: center;
+}
+
+#footer p {
+    color: #fff;
+}
+a:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+.dog {
+    content: '';
+    position: sticky;
+    width: 100%;
+    height: 202px;
+    background: url(../image/line_footer.png) no-repeat center;
+    margin-bottom: -33px;
+}   
+
+img {
+    width: 100%;
+}
+img {
+    vertical-align: middle;
+    border-style: none;
+}
+.desktop-only {
+    display: block;
+}
+
