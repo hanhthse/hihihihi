@@ -8,24 +8,32 @@ package com.apethotel.dal.impl;
 import com.apethotel.dal.DBContext;
 import com.apethotel.dal.GenericDAO;
 import com.apethotel.entity.Cages;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  *
  * @author Acer
  */
-public class CagesDAO extends GenericDAO<Cages>{
+public class CagesDAO extends GenericDAO<Cages> {
 
     @Override
     public List<Cages> findAll() {
         return queryGenericDAO(Cages.class);
     }
-    
 
     @Override
     public int insert(Cages t) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    public List<Cages> findByKeyWord(String keyword) {
+        String sql = "select * from Cages \n"
+                + "where description like ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("keyword", "%" + keyword + "%");
+        return queryGenericDAO(Cages.class, sql, parameterMap);
+    }   
     
-    
+
 }

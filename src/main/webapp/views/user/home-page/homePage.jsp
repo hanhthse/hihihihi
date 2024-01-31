@@ -27,12 +27,16 @@
 
         <!-- Navigation Bar -->
         <jsp:include page="../../common/user/navigationBar.jsp"></jsp:include>
-        <!--header-->
-        <div class="header">
+            <!--header-->
+            <div class="header">
                 <img src="<%=request.getContextPath()%>/image/header.png" alt="Pet Service Image">
         </div>
         <!--Cages-->
-        <jsp:include page="../../common/user/cages.jsp"></jsp:include>
+        <div id="cages">
+
+            <jsp:include page="../../common/user/cages.jsp"></jsp:include>
+            </div>
+
 
             <div class="dog">   
             </div>

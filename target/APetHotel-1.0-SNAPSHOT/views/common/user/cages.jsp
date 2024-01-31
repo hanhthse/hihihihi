@@ -26,6 +26,12 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center; /* Căn giữa các thành phần theo chiều dọc */
+                transition: transform 0.3s ease; /* Thêm hiệu ứng chuyển tiếp cho transform */
+            }
+            .service-block:hover {
+                transform: scale(1.05); /* Làm cho block lớn lên 5% */
+                background-color: #ffc107; /* Màu nền thay đổi khi hover */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Tạo bóng đổ */
             }
 
             /* Tiếp tục với phần còn lại của CSS */
@@ -143,7 +149,7 @@
                         <li>Vui chơi mỗi ngày 2 lần</li>
                         <li>Cung cấp hình ảnh và video của các bé mỗi ngày</li>
                     </ul>
-                    <button type="button" class="contact-button">Liên hệ tư vấn</button>
+                    <a href="#" class="contact-button btn btn-primary">Liên hệ tư vấn</a>
                 </div>
             </c:forEach>
         </div>

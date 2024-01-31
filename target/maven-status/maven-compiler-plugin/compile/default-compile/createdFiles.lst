@@ -2,9 +2,15 @@ com\apethotel\dal\DBContext.class
 com\apethotel\entity\Users$UsersBuilder.class
 com\apethotel\dal\impl\CagesDAO.class
 com\apethotel\dal\GenericDAO.class
+com\apethotel\entity\BookingSummary.class
+com\apethotel\dal\impl\BookingSummaryDAO.class
+com\apethotel\filter\AdminFilter.class
 com\apethotel\entity\Role.class
+com\apethotel\controller\admin\DashboardServlet.class
+com\apethotel\entity\BookingSummary$BookingSummaryBuilder.class
 com\apethotel\entity\Cages.class
 com\apethotel\entity\Role$RoleBuilder.class
+com\apethotel\controller\user\AuthenServlet.class
 com\bookstore\Constant\Constant.class
 com\apethotel\dal\impl\UsersDAO.class
 com\apethotel\entity\Cages$CagesBuilder.class

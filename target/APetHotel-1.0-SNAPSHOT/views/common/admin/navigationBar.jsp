@@ -4,14 +4,30 @@
     Author     : ADMIN
 --%>
 
+<%@page import="com.bookstore.Constant.Constant"%>
+<%@page import="com.apethotel.entity.Users"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand" href="#">
+        <img src="https://i.ibb.co/rHmfgY8/image.png" alt="Logo" style="width:165px;">
+    </a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
     </button>
+    <!--welcomme-->
+    <%
+        Users user = (Users) session.getAttribute(Constant.SESSION_ACCOUNT);
+
+    %>
+    
+    <div class="container justify-content-center">
+        <h1 class="navbar-brand mr-1">
+            Welcome <%= user.getName() %> to page Dashboard
+        </h1>
+        <!-- Các phần tử navbar khác (nếu có) -->
+    </div>
 
     <!-- Navbar Search -->
     <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -25,6 +41,8 @@
             </div>
         </div>
     </form>
+
+
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
@@ -63,6 +81,7 @@
                 <a class="dropdown-item" href="#">Settings</a>
                 <a class="dropdown-item" href="#">Activity Log</a>
                 <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="${pageContext.request.contextPath}/home">Back Home</a>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
             </div>
         </li>

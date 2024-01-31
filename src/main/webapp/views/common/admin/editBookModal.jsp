@@ -12,48 +12,57 @@
             </div>
             <div class="modal-body">
                 <form id="editBookForm" action="dashboard?action=edit" method="POST" enctype="multipart/form-data">
-                    <!--id-->
-                    <div class="form-group" style="display: none">
-                        <input type="text" class="form-control" id="idEditInput" name="id">
-                    </div>
-                    <!--Name-->
+                    <!-- Booking ID (ẩn) -->
+                    <input type="hidden" class="form-control" id="idEditInput" name="bookingId">
+
+                    <!-- User Name -->
                     <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" class="form-control" id="nameEditInput" name="name">
-                        <div id="nameEditError" class="error"></div>
+                        <label for="userName">User Name:</label>
+                        <input type="text" class="form-control" id="userNameEditInput" name="userName" readonly>
                     </div>
-                    <!--Author-->
+
+                    <!-- Pet Name -->
                     <div class="form-group">
-                        <label for="author">Author:</label>
-                        <input type="text" class="form-control" id="authorEditInput" name="author">
-                        <div id="authorEditError" class="error"></div>
+                        <label for="petName">Pet Name:</label>
+                        <input type="text" class="form-control" id="petNameEditInput" name="petName" readonly>
                     </div>
-                    <!--Price-->
+
+                    <!-- Cage ID -->
                     <div class="form-group">
-                        <label for="price">Price:</label>
-                        <input type="text" class="form-control" id="priceEditInput" name="price">
-                        <div id="priceEditError" class="error"></div>
+                        <label for="cageId">Cage ID:</label>
+                        <input type="text" class="form-control" id="cageIdEditInput" name="cageId">
                     </div>
-                    <!--Quantity-->
+
+                    <!-- Date Start -->
                     <div class="form-group">
-                        <label for="quantity">Quantity:</label>
-                        <input type="text" class="form-control" id="quantityEditInput" name="quantity">
-                        <div id="quantityEditError" class="error"></div>
+                        <label for="startDate">Date Start:</label>
+                        <input type="text" class="form-control" id="startDateEditInput" name="startDate">
                     </div>
-                    <!--Category-->
+
+                    <!-- Date End -->
                     <div class="form-group">
-                        <label for="category">Category: </label>
-                        <div class="input-group">
-                            <select class="custom-select" id="categoryEditInput" name="category">
-                                <c:forEach items="${listCategories}" var="category">
-                                    <option value="${category.id}">${category.name}</option>
-                                </c:forEach>
-                            </select>
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button">Category</button>
-                            </div>
-                        </div>
+                        <label for="endDate">Date End:</label>
+                        <input type="text" class="form-control" id="endDateEditInput" name="endDate">
                     </div>
+
+                    <!-- Price -->
+                    <div class="form-group">
+                        <label for="totalCost">Price:</label>
+                        <input type="text" class="form-control" id="totalCostEditInput" name="totalCost" readonly>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="form-group">
+                        <label for="statusEditInput">Status:</label>
+                        <select class="form-control" id="statusEditInput" name="status">
+                            <option value="unconfirm">Unconfirm</option>
+                            <option value="confirm">Confirm</option>
+                            <option value="progress">Progress</option>
+                            <option value="cancel">Cancel</option>
+                            <option value="complete">Complete</option>
+                        </select>
+                    </div>
+
                     <!--Image-->
                     <div class="form-group">
                         <label for="image">Image: </label>
@@ -71,11 +80,6 @@
                              style="display: none; max-width: 300px; max-height: 300px;">
                         <input type="hidden" id="currentImage" name="currentImage" value="">
                     </div>
-                    <!--Description-->
-                    <div class="form-group">
-                        <label for="descriptionEditInput">Description:</label>
-                        <textarea class="form-control" id="descriptionEdit" name="description"></textarea>
-                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -89,26 +93,28 @@
 
 <script>
     function validateForm2() {
-        let name = $('#nameEditInput').val();
-        let author = $('#authorEditInput').val();
-        let price = $('#priceEditInput').val();
-        let quantity = $('#quantityEditInput').val();
+        let username = $('#userNameEditInput').val();
+        let petname = $('#petNameEditInput').val();
+        let cages = $('#cageIdEditInput').val();
+        let dateStart = $('#startDateEditInput').val();
+        let dateEnd = $('#endDateEditInput').val();
+        let price = $('#totalCostEditInput').val();
 
         //xoá thông báo lỗi hiện tại
         $('.error').html('');
 
-        if (name === '') {
+        if (username === '') {
             $('#nameEditError').html('Tên sách không được để trống');
         }
 
-        if (author === '') {
+        if (petname === '') {
             $('#authorEditError').html('Tên tác giả không được để trống');
         }
 
         if (price === '') {
-            $('#priceEditError').html('Giá của quyển sách không được để trống');
+            $('#totalCostEditInput').html('Giá của bookings không được để trống');
         } else if (!$.isNumeric(price) || parseFloat(price) < 0) {
-            $('#priceEditError').html('Giá của quyển sách phải là số và không được nhỏ hơn 0');
+            $('#totalCostEditInput').html('Giá của quyển sách phải là số và không được nhỏ hơn 0');
         }
 
         if (quantity === '') {
@@ -142,17 +148,19 @@
         reader.readAsDataURL(file);
     }
 
-    function editBookModal(id, name, description, author, price, quantity, image, categoryId) {
-        $('#idEditInput').val(id);
-        $('#nameEditInput').val(name);
-        $('#authorEditInput').val(author);
-        $('#priceEditInput').val(price);
-        $('#quantityEditInput').val(quantity);
-        $('#categoryEditInput').val(categoryId);
-        $('#descriptionEdit').val(description);
-        $('#previewImage2').attr('src', image);
-        $('#previewImage2').css('display', 'block');
+    function editBookModal(bookingId, userName, petName, cageId, startDate, endDate, totalCost, status, image) {
+        $('#idEditInput').val(bookingId);
+        $('#userNameEditInput').val(userName);
+        $('#petNameEditInput').val(petName);
+        $('#cageIdEditInput').val(cageId);
+        $('#startDateEditInput').val(startDate);
+        $('#endDateEditInput').val(endDate);
+        $('#totalCostEditInput').val(totalCost);
+        $('#statusEditInput').val(status);
         $('#currentImage').val(image);
+        $('#previewImage2').attr('src', image).css('display', image ? 'block' : 'none');
     }
+
+
 
 </script>

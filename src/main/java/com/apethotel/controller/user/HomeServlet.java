@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package com.apethotel.controller.user;
-
-
 import com.apethotel.dal.impl.CagesDAO;
 import com.apethotel.dal.impl.UsersDAO;
 import com.apethotel.entity.Cages;
@@ -20,7 +18,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Acer 
+ * @author Acer
  */
 public class HomeServlet extends HttpServlet {
 
@@ -38,11 +36,19 @@ public class HomeServlet extends HttpServlet {
         HttpSession session = request.getSession();
         //tao DAO
         cagesDAO = new CagesDAO();
-        
-        List<Cages> listCages = cagesDAO.findAll();
+
+        List<Cages> listCages;
 
         //get du lieu tu database len
         //get ve action
+        String action = request.getParameter("action") == null ? "" : request.getParameter("action");
+        switch (action) {
+            case "search":
+                listCages = searchByKeyWord(request, response);
+                break;
+            default:
+                listCages = cagesDAO.findAll();
+        }
 
         //set listBook vao session
         session.setAttribute("listCages", listCages);
@@ -53,6 +59,15 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    }
+
+    private List<Cages> searchByKeyWord(HttpServletRequest request, HttpServletResponse response) {
+        //get ve keyword
+        String keyword = request.getParameter("keyword");
+        request.setAttribute("findKeyWord", keyword);
+        // tao ra DAO
+        cagesDAO = new CagesDAO();
+        return cagesDAO.findByKeyWord(keyword);
     }
 
 }
