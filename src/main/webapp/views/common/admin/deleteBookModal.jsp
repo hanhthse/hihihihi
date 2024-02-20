@@ -14,7 +14,7 @@
             <div class="modal-footer">
                 <form action="dashboard?action=cancel" method="POST">
                     <div class="form-group" style="display: none">
-                        <input type="text" class="form-control" id="idDeleteInput" name="id">
+                        <input type="text" class="form-control" id="idDeleteInput" name="Id">
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
                     <button type="submit" class="btn btn-danger">Có</button>

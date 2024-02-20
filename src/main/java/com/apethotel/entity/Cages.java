@@ -26,5 +26,5 @@ public class Cages {
     private int CageID;
     private String Description;
     private String Size;
-    private int PricePerDay;
+    private double PricePerDay;
 }

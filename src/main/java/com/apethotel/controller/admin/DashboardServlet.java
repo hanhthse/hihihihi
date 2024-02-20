@@ -6,18 +6,21 @@
 package com.apethotel.controller.admin;
 
 import com.apethotel.dal.impl.BookingSummaryDAO;
-import com.apethotel.dal.impl.CagesDAO;
 import com.apethotel.dal.impl.UsersDAO;
+import com.apethotel.dao.BookingSummaryDAO2;
+import com.apethotel.dao.CagesDAO2;
 import com.apethotel.entity.BookingSummary;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import static java.lang.System.out;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,18 +31,19 @@ import javax.servlet.http.Part;
  *
  * @author Acer
  */
+@MultipartConfig
 public class DashboardServlet extends HttpServlet {
 
     // Tạo ra đối tượng DAO
     UsersDAO userDAO;
-    CagesDAO cagesDAO;
-    BookingSummaryDAO bookingDAO;
+    CagesDAO2 cagesDAO2;
+    BookingSummaryDAO2 bookingDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Tạo đối tượng DAO
-        bookingDAO = new BookingSummaryDAO();
+        bookingDAO = new BookingSummaryDAO2();
         //tim ve toan bo bookingsummary
         List<BookingSummary> listBookings;
         String action = request.getParameter("action") == null ? "default" : request.getParameter("action");
@@ -89,8 +93,21 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //set encoding UTF-8
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html; charset=UTF-8");
+//        Enumeration in = request.getParameterNames();
+//        while (in.hasMoreElements()) {
+//            String paramName = in.nextElement().toString();
+//            System.out.println(paramName + " = " + request.getParameter(paramName) + "<br>");
+//        }
         // Tạo đối tượng DAO
-        bookingDAO = new BookingSummaryDAO();
+        bookingDAO = new BookingSummaryDAO2();
+
+        System.out.println("action:" + request.getParameter("action"));
+        System.out.println("id:" + request.getParameter("id"));
+        System.out.println("name" + request.getParameter("name"));
         //get ve action
         String action = request.getParameter("action");
         //sw
@@ -101,8 +118,7 @@ public class DashboardServlet extends HttpServlet {
             case "cancel":
                 changesStatusCancelDoPost(request, response);
                 break;
-                
-            case"edit":
+            case "edit":
                 edit(request);
                 break;
             default:
@@ -119,17 +135,19 @@ public class DashboardServlet extends HttpServlet {
 
     private void changeStatusDoPost(HttpServletRequest request, HttpServletResponse response) {
         //get ve bookingId
-        String bookingId = request.getParameter("bookingId");
+        String bookingId_raw = request.getParameter("bookingId");
+        int bookingId = Integer.parseInt(bookingId_raw);
         // function change status
-        bookingDAO = new BookingSummaryDAO();
+        bookingDAO = new BookingSummaryDAO2();
         bookingDAO.changeStatus(bookingId);
     }
 
     private void changesStatusCancelDoPost(HttpServletRequest request, HttpServletResponse response) {
         //get ve bookingId
-        String bookingId = request.getParameter("id");
+        String bookingId_raw = request.getParameter("Id");
+        int bookingId = Integer.parseInt(bookingId_raw);
         // function change status
-        bookingDAO = new BookingSummaryDAO();
+        bookingDAO = new BookingSummaryDAO2();
         bookingDAO.Cancel(bookingId);
     }
 
@@ -145,32 +163,32 @@ public class DashboardServlet extends HttpServlet {
 
     private void edit(HttpServletRequest request) throws IOException {
         BookingSummary bs = new BookingSummary();
+        System.out.println("bookingidraw : " + request.getParameter("bookingId"));
+        int id = Integer.parseInt(request.getParameter("bookingId"));
+        String username = request.getParameter("uName");
+        String petName = request.getParameter("pName");
+        int cageId = Integer.parseInt(request.getParameter("cageId"));
 
-    int id = Integer.parseInt(request.getParameter("bookingId"));
-    String username = request.getParameter("userName");
-    String petName = request.getParameter("petName");
-    int cageId = Integer.parseInt(request.getParameter("cageId"));
-    
-    // Giả sử startDate được gửi ở dạng chuỗi "yyyy-MM-dd"
-    String startDateStr = request.getParameter("startDate");
-    String endDateStr   = request.getParameter("endDate");
-    try {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date parsedDate = dateFormat.parse(startDateStr);
-        java.util.Date parsedDateEnd = dateFormat.parse(endDateStr);
-        Timestamp startDate = new Timestamp(parsedDate.getTime());
-        Timestamp endDate = new Timestamp(parsedDateEnd.getTime());
-        // Set startDate vào đối tượng BookingSummary của bạn
-        bs.setStartDate(startDate);
-        bs.setEndDate(endDate);
+        // Giả sử startDate được gửi ở dạng chuỗi "yyyy-MM-dd"
+        String startDateStr = request.getParameter("startDate");
+        String endDateStr = request.getParameter("endDate");
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            java.util.Date parsedDate = dateFormat.parse(startDateStr);
+            java.util.Date parsedDateEnd = dateFormat.parse(endDateStr);
+            Timestamp startDate = new Timestamp(parsedDate.getTime());
+            Timestamp endDate = new Timestamp(parsedDateEnd.getTime());
+            // Set startDate vào đối tượng BookingSummary của bạn
+            bs.setStartDate(startDate);
+            bs.setEndDate(endDate);
 
-    } catch (Exception e) { // ParseException
-        // Xử lý lỗi ở đây
-    }
-    double price = Double.parseDouble(request.getParameter("totalCost")) ;
-    String status = request.getParameter("status");
-    String imagePath=null;
-    try {
+        } catch (Exception e) { // ParseException
+            // Xử lý lỗi ở đây
+        }
+        double price = Double.parseDouble(request.getParameter("totalCost"));
+        String status = request.getParameter("status");
+        String imagePath = null;
+        try {
             //get image
             Part part = request.getPart("image");
             if (part == null || part.getSize() <= 0) {
@@ -191,14 +209,14 @@ public class DashboardServlet extends HttpServlet {
                     part.write(image.getAbsolutePath());
                     imagePath = "/APetHotel/image/" + image.getName();
                 } catch (Exception e) {
-                    System.out.println(e.getMessage() +"Error private void edit(HttpServletRequest request)");
+                    System.out.println(e.getMessage() + "Error private void edit(HttpServletRequest request)");
                 }
             }
         } catch (ServletException ex) {
             Logger.getLogger(DashboardServlet.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage() +"Error private void edit(HttpServletRequest request)");
+            System.out.println(ex.getMessage() + "Error private void edit(HttpServletRequest request)");
         }
-    
+
         //setter paramter
         bs.setBookingId(id);
         bs.setUserName(username);
@@ -207,7 +225,7 @@ public class DashboardServlet extends HttpServlet {
         bs.setImage(imagePath);
         bs.setTotalCost(price);
         bs.setStatus(status);
-        BookingSummaryDAO dao= new BookingSummaryDAO();
+        BookingSummaryDAO dao = new BookingSummaryDAO();
         dao.updateBooking(bs);
     }
 

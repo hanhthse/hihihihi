@@ -56,7 +56,6 @@ public class BookingSummaryDAO extends GenericDAO<BookingSummary> {
         parameterMap = new LinkedHashMap<>();
         parameterMap.put("status", status);
         return queryGenericDAO(BookingSummary.class, sql, parameterMap);
-
     }
 
     public void updateBooking(BookingSummary bs) {

@@ -20,6 +20,10 @@
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>com.apethotel.controller.admin.DashboardServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>mainControllers</servlet-name>
+        <servlet-class>com.apethotel.controller.mainControllers</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HomeServlet</servlet-name>
         <url-pattern>/home</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>DashboardServlet</servlet-name>
         <url-pattern>/admin/dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>mainControllers</servlet-name>
+        <url-pattern>/mainControllers</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

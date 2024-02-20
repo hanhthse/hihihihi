@@ -6,6 +6,7 @@
 package com.apethotel.controller.user;
 
 import com.apethotel.dal.impl.UsersDAO;
+import com.apethotel.dao.UsersDAO2;
 import com.apethotel.entity.Users;
 import com.bookstore.Constant.Constant;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpSession;
  */
 public class AuthenServlet extends HttpServlet {
 
-    UsersDAO userDAO;
+    UsersDAO2 userDAO;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -91,7 +92,7 @@ public class AuthenServlet extends HttpServlet {
 
     private void loginDoPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         //get về thông tin
-        userDAO = new UsersDAO();
+        userDAO = new UsersDAO2();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         //kiem tra xem account co ton tai khong
@@ -113,7 +114,7 @@ public class AuthenServlet extends HttpServlet {
     private void registerDoPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         //tao doi tuong session, accountDAO
         HttpSession session = request.getSession();
-        userDAO = new UsersDAO();
+        userDAO = new UsersDAO2();
         //get ve cac thong tin
         String fullname = request.getParameter("username");
         String password = request.getParameter("password");

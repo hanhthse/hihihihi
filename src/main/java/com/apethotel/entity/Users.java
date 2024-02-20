@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 
 public class Users {
-    private String userId;
+    private int userId;
     private String name;
     private String email;
     private String password;
